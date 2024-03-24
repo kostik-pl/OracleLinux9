@@ -1,12 +1,14 @@
 FROM oraclelinux:8-slim
 
-ENV LANG=ru_RU.UTF-8
-# add locales
-RUN dnf install -y glibc-langpack-ru
-# update from repository
+# Update from repository
 RUN dnf update -y
 
-# Set POSTGRES PRO variables
+# Add locales
+RUN dnf install -y glibc-langpack-ru
+# Set locales
+ENV LANG=ru_RU.UTF-8
+
+# Set POSTGRES variables
 ENV PGDATA=/_data/pg_data
 
 # Explicitly set user/group IDs and data dir
@@ -16,11 +18,11 @@ RUN groupadd -r postgres --gid=9999 ; \
     chown -R postgres:postgres $PGDATA ; \
     chmod 700 $PGDATA
 
-# Disable the built-in PostgreSQL module:
+# Disable the built-in PostgreSQL module
 RUN dnf -qy module disable postgresql
-# Install the repository RPM:
+# Install the repository RPM
 RUN dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-# Install PostgreSQL:
+# Install PostgreSQL 15
 RUN dnf install -y postgresql15-server postgresql15-client postgresql15-contrib
 
 # Change settings
