@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/ubi:8.5
+FROM oraclelinux:8-slim
 
 ENV LANG=ru_RU.UTF-8
 # add locales
@@ -15,10 +15,6 @@ RUN groupadd -r postgres --gid=9999 ; \
     mkdir -p $PGDATA ; \
     chown -R postgres:postgres $PGDATA ; \
     chmod 700 $PGDATA
-
-# add repository to list
-COPY pgpro-14.repo /etc/yum.repos.d
-COPY RPM-GPG-KEY-POSTGRESPRO /etc/pki/rpm-gpg
 
 # install packages
 RUN dnf install -y postgrespro-std-14
