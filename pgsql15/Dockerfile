@@ -17,8 +17,7 @@ RUN groupadd -r postgres --gid=9999 ; \
     chmod 700 $PGDATA
 
 # install packages
-RUN dnf install -y postgrespro-std-14
-RUN dnf install -y postgrespro-std-14-contrib
+RUN dnf module install postgresql:15/server
 
 # change settings
 RUN sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /opt/pgpro/std-14/share/postgresql.conf.sample ; \
@@ -30,9 +29,9 @@ RUN sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /opt/pgpro/std-14/sh
 RUN dnf clean all
 
 # setup for start
-ENV PATH $PATH:/opt/pgpro/std-14/bin
+ENV PATH $PATH:/usr/lib64/pgsql/bin
 COPY pgpro-entrypoint.sh /usr/local/bin
-RUN chmod +x /usr/local/bin/pgpro-entrypoint.sh
+#RUN chmod +x /usr/local/bin/pgpro-entrypoint.sh
 
 # change user
 USER postgres
