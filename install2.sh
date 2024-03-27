@@ -57,7 +57,7 @@ chmod -R 700 /_data/pg_data
 #shopt -u extglob
 
 #Change firewall rules
-curl -LJO https://raw.githubusercontent.com/kostik-pl/rhel8-public/main/public.xml
+curl -LJO https://raw.githubusercontent.com/kostik-pl/OracleLinux9/main/firewalld_public.xml
 cp public.xml /etc/firewalld/zones/
 firewall-cmd --reload
 
