@@ -8,8 +8,8 @@ sed -i 's/graphroot = "\/var\/lib\/containers\/storage"/graphroot = "\/_containe
 #Add GROUP and USER same as in container
 groupadd -r postgres --gid=9999
 useradd -r -M -g postgres --uid=9999 postgres
-groupadd -r grp1cv8 --gid=9998
-useradd -r -m -g grp1cv8 --uid=9998 usr1cv8
+#groupadd -r grp1cv8 --gid=9998
+#useradd -r -m -g grp1cv8 --uid=9998 usr1cv8
 
 #Change access rights
 #if [ ! -d "/_data/httpd" ] ; then
@@ -60,6 +60,7 @@ chmod -R 700 /_data/pg_data
 curl -LJO https://raw.githubusercontent.com/kostik-pl/OracleLinux9/main/firewalld_public.xml
 cp firewalld_public.xml /etc/firewalld/zones/public.xml
 firewall-cmd --reload
+sleep 10
 
 HOSTNAME=`hostname`
 
@@ -67,16 +68,16 @@ HOSTNAME=`hostname`
 podman run --name pgpro --ip 10.88.0.2 --hostname $HOSTNAME -dt -p 5432:5432 -v /_data:/_data docker.io/kostikpl/rhel8:pgpro-14.2.1_rhel-ubi-8.5
 podman generate systemd --new --name pgpro > /etc/systemd/system/pgpro.service
 systemctl enable --now pgpro
+sleep 1m
 podman exec -ti pgpro psql -c "ALTER USER postgres WITH PASSWORD 'RheujvDhfub72';"
-#podman exec -ti pgpro psql -c "ALTER USER srv1c WITH PASSWORD '\$GitybwZ - ZxvtyM\$';" # $GitybwZ - ZxvtyM$
 
 # install httpd
-dnf -y install httpd
-systemctl enable --now httpd
+#dnf -y install httpd
+#systemctl enable --now httpd
 
 #Install HASP
-curl -LJO https://raw.githubusercontent.com/kostik-pl/rhel8-public/main/hasp.sh
-bash hasp.sh
+#curl -LJO https://raw.githubusercontent.com/kostik-pl/rhel8-public/main/hasp.sh
+#bash hasp.sh
 
 #Start SRV1C container
 #podman run --name srv1c --ip 10.88.0.3 --hostname $HOSTNAME --add-host=pgpro.local:10.88.0.2 -dt -p 80:80 -p 1540-1541:1540-1541 -p 1545:1545 -p 1560-1591:1560-1591 -v /_data:/_data -v /dev/bus/usb:/dev/bus/usb docker.io/kostikpl/rhel8:srv1c-8.3.1_rhel-ubi-init-8.4
