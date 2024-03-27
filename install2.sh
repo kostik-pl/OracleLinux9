@@ -58,7 +58,7 @@ chmod -R 700 /_data/pg_data
 
 #Change firewall rules
 curl -LJO https://raw.githubusercontent.com/kostik-pl/OracleLinux9/main/firewalld_public.xml
-cp public.xml /etc/firewalld/zones/
+cp firewalld_public.xml /etc/firewalld/zones/public.xml
 firewall-cmd --reload
 
 HOSTNAME=`hostname`
