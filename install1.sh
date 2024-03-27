@@ -7,10 +7,10 @@ DISK2="/dev/disk/by-label/_data /_data auto nosuid,nodev,nofail,x-gvfs-show 0 0"
 
 #Setup system
 dnf -y upgrade
+dnf -y install mc
 #dnf -y install krb5-workstation
-#dnf -y install mc
 #dnf -y install pcp-system-tools
-systemctl enable pmcd
+#systemctl enable pmcd
 #systemctl enable cockpit.socket
 sed -i 's/enforcing/disabled/g' /etc/selinux/config
 
