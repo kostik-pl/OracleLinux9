@@ -84,10 +84,10 @@ bash hasp.sh
 #systemctl enable --now srv1c
 
 #Install 1C Enterprise server on host
-curl -LJO https://raw.githubusercontent.com/kostik-pl/rhel8-public/main/1c.sh
-bash 1c.sh
-printf "\nInclude /_data/httpd/conf/extra/httpd-1C-pub.conf\n" >> /etc/httpd/conf/httpd.conf
-systemctl restat httpd
+#curl -LJO https://raw.githubusercontent.com/kostik-pl/rhel8-public/main/1c.sh
+#bash 1c.sh
+#printf "\nInclude /_data/httpd/conf/extra/httpd-1C-pub.conf\n" >> /etc/httpd/conf/httpd.conf
+#systemctl restat httpd
 
 #Clean
 dnf clean all
