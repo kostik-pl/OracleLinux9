@@ -57,13 +57,7 @@ chown -R postgres:postgres /_data/pg_data
 chmod -R 700 /_data/pg_data
 
 #Start POSTGRESQL container and restore database
-#firewall-cmd --permanent --new-service=pgsql
-#firewall-cmd --permanent --service=pgsql --set-description=Allow services for POSTGRESQL server
-#firewall-cmd --permanent --service=pgsql --set-short=pgsql
-#firewall-cmd --permanent --service=pgsql --add-port=5432/tcp
-curl -o /etc/firewalld/services/pgsql.xml -LJO https://raw.githubusercontent.com/kostik-pl/OracleLinux9/pgsql.xml
-sleep 10 #waiting for changes to be applied 
-firewall-cmd --permanent --zone=public --add-service=pgsql
+firewall-cmd --permanent --zone=public --add-service=postgresql
 
 HOSTNAME=`hostname`
 podman run --name pgsql15 --ip 10.88.0.2 --hostname $HOSTNAME -dt -p 5432:5432 -v /_data:/_data docker.io/kostikpl/ol9:pgsql15
