@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <service>
-  <short>PGSQL</short>
+  <short>pgsql</short>
   <description>Allow services for Zabbix server and agent</description>
   <port protocol="tcp" port="5432"/>
 </service>
