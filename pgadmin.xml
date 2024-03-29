@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>pgadmin</short>
+  <description>Allow services for PGADMIN web server</description>
+  <port protocol="tcp" port="5050"/>
+</service>
