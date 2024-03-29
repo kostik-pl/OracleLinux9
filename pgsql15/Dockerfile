@@ -4,7 +4,7 @@ FROM oraclelinux:9
 RUN dnf update -y
 
 # Add locales
-RUN dnf install -y glibc-langpack-ua glibc-langpack-ru
+RUN dnf install -y glibc-langpack-uk glibc-langpack-ru
 # Set locales
 ENV LANG=uk_UA.UTF-8
 
