@@ -69,3 +69,5 @@ podman exec -ti pgsql15 psql -c "ALTER USER postgres WITH PASSWORD 'RheujvDhfub7
 
 #Clean
 dnf clean all
+#Reload FIREWALLD config
+firewall-cmd --reload
