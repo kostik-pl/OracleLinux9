@@ -1,15 +1,48 @@
 #!/bin/bash
 
+#Check disk
+FILE1="/dev/disk/by-label/_containers"
+DISK1="/dev/disk/by-label/_containers /_containers auto nosuid,nodev,nofail,x-gvfs-show 0 0"
+FILE2="/dev/disk/by-label/_data"
+DISK2="/dev/disk/by-label/_data /_data auto nosuid,nodev,nofail,x-gvfs-show 0 0"
+
+if [ ! -L "$FILE1" ]
+then
+    echo "Disk labeled as $FILE1 not found"
+    exit 1
+else
+    echo "Disk labeled as $FILE1 found"
+fi
+if [ ! -L "$FILE2" ]
+then
+    echo "Disk labeled as $FILE2 not found"
+    exit 1
+else
+    echo "Disk labeled as $FILE2 found"
+fi
+
+#Setup disk
+if ! grep -q '/_containers' /etc/fstab
+then
+    echo "Addind $FILE1 to fstab"
+    printf "$DISK1\n" >> /etc/fstab
+fi
+if ! grep -q '/_data' /etc/fstab
+then
+    echo "Addind $FILE1 to fstab"
+    printf "$DISK2\n" >> /etc/fstab
+fi
+
 #Setup PODMAN
 #dnf -y module install container-tools
 #dnf -y install podman-docker
 sed -i 's/graphroot = "\/var\/lib\/containers\/storage"/graphroot = "\/_containers"/g' /etc/containers/storage.conf
 
 #Add GROUP and USER same as in container
-groupadd -r postgres --gid=9999
-useradd -r -M -g postgres --uid=9999 postgres
-#groupadd -r grp1cv8 --gid=9998
-#useradd -r -m -g grp1cv8 --uid=9998 usr1cv8
+groupadd -r postgres --gid=99
+useradd -r -M -g postgres --uid=99 postgres
+#groupadd -r grp1cv8 --gid=98
+#useradd -r -m -g grp1cv8 --uid=98 usr1cv8
 
 #Change access rights
 #if [ ! -d "/_data/httpd" ] ; then
@@ -60,16 +93,17 @@ chmod -R 700 /_data/pg_data
 curl -LJO https://raw.githubusercontent.com/kostik-pl/OracleLinux9/main/firewalld_public.xml
 cp firewalld_public.xml /etc/firewalld/zones/public.xml
 firewall-cmd --reload
-sleep 10
 
 HOSTNAME=`hostname`
 
-#Start PGPRO container and restore database
-podman run --name pgpro --ip 10.88.0.2 --hostname $HOSTNAME -dt -p 5432:5432 -v /_data:/_data docker.io/kostikpl/rhel8:pgpro-14.2.1_rhel-ubi-8.5
-podman generate systemd --new --name pgpro > /etc/systemd/system/pgpro.service
-systemctl enable --now pgpro
 sleep 1m
-podman exec -ti pgpro psql -c "ALTER USER postgres WITH PASSWORD 'RheujvDhfub72';"
+
+#Start PGSQL15 container and restore database
+podman run --name pgsql15 --ip 10.88.0.2 --hostname $HOSTNAME -dt -p 5432:5432 -v /_data:/_data docker.io/kostikpl/ol9:pgsql15
+podman generate systemd --new --name pgsql15 > /etc/systemd/system/pgsql15.service
+systemctl enable --now pgsql15
+sleep 1m
+podman exec -ti pgsql15 psql -c "ALTER USER postgres WITH PASSWORD 'RheujvDhfub72';"
 
 # install httpd
 #dnf -y install httpd
