@@ -13,7 +13,7 @@ firewall-cmd --permanent --zone=public --remove-service=dhcpv6-client
 #Setup system
 dnf upgrade -y
 
-dnf install pcp pcp-system-tools pcp-gui
+dnf install -y pcp pcp-system-tools pcp-gui
 systemctl enable --now pmcd pmlogger
 systemctl enable cockpit.socket
 
