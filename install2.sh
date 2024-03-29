@@ -60,8 +60,7 @@ chmod -R 700 /_data/pg_data
 firewall-cmd --permanent --new-service=pgsql
 firewall-cmd --permanent --service=pgsql --set-description=Allow services for POSTGRESQL server
 firewall-cmd --permanent --service=pgsql --set-short=pgsql
-firewall-cmd --permanent --service=pgsql --add-port=5432
-firewall-cmd --permanent --service=pgsql --add-protocol=protocol
+firewall-cmd --permanent --service=pgsql --add-port=5432/tcp
 HOSTNAME=`hostname`
 #curl -LJO https://raw.githubusercontent.com/kostik-pl/OracleLinux9/pgsql.xml
 #cp pgsql.xml /etc/firewalld/services/
