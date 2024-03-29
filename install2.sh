@@ -39,8 +39,6 @@ sed -i 's/graphroot = "\/var\/lib\/containers\/storage"/graphroot = "\/_containe
 #Add GROUP and USER same as in container
 groupadd -r postgres --gid=99
 useradd -r -M -g postgres --uid=99 postgres
-#groupadd -r grp1cv8 --gid=98
-#useradd -r -m -g grp1cv8 --uid=98 usr1cv8
 
 #Change access rights
 if [ ! -d "/_data/pg_backup" ] ; then
