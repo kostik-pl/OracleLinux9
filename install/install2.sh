@@ -63,8 +63,8 @@ HOSTNAME=`hostname`
 podman run --name pgsql15 --ip 10.88.0.2 --hostname $HOSTNAME -dt -p 5432:5432 -v /_data:/_data docker.io/kostikpl/ol9:pgsql15
 podman generate systemd --new --name pgsql15 > /etc/systemd/system/pgsql15.service
 systemctl enable --now pgsql15
-sleep 1m
-podman exec -ti pgsql15 psql -c "ALTER USER postgres WITH PASSWORD 'RheujvDhfub72';"
+read PG_PASSWD
+podman exec -ti pgsql15 psql -c "ALTER USER postgres WITH PASSWORD $PG_PASSWD;"
 
 #Clean
 dnf clean all
