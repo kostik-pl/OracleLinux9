@@ -9,14 +9,22 @@ DISK2="/dev/disk/by-label/_data /_data auto nosuid,nodev,nofail,x-gvfs-show 0 0"
 if [ ! -L "$FILE1" ]
 then
     echo "Disk labeled as $FILE1 not found"
-    exit 1
+    read -p "Continue? " -n 1 -r
+    if [[ $REPLY =~ ^[Nn]$ ]]
+    then
+        exit 1
+    fi
 else
     echo "Disk labeled as $FILE1 found"
 fi
 if [ ! -L "$FILE2" ]
 then
     echo "Disk labeled as $FILE2 not found"
-    exit 1
+    read -p "Continue? " -n 1 -r
+    if [[ $REPLY =~ ^[Nn]$ ]]
+    then
+        exit 1
+    fi
 else
     echo "Disk labeled as $FILE2 found"
 fi
@@ -32,6 +40,7 @@ then
     echo "Addind $FILE1 to fstab"
     printf "$DISK2\n" >> /etc/fstab
 fi
+mount -a
 
 #Change PODMAN config, path to containers storage
 sed -i 's/graphroot = "\/var\/lib\/containers\/storage"/graphroot = "\/_containers"/g' /etc/containers/storage.conf
