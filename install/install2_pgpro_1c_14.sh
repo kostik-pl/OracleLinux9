@@ -72,7 +72,7 @@ firewall-cmd --reload
 #Start POSTGRESPRO container
 HOSTNAME=`hostname`
 podman run --name pgpro  --hostname $HOSTNAME -dt -p 5432:5432 -v /_data:/_data docker.io/kostikpl/ol9:pgsql_1c_14
-podman generate systemd --new --name pgsql15 > /etc/systemd/system/pgsql15.service
+podman generate systemd --new --name pgpro > /etc/systemd/system/pgpro.service
 systemctl enable --now pgpro
 PG_PASSWD = 'RheujvDhfub72'
 podman exec -ti pgpro -c "ALTER USER postgres WITH PASSWORD $PG_PASSWD;"
