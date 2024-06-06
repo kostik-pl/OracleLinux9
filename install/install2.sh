@@ -33,10 +33,10 @@ then
     printf "$DISK2\n" >> /etc/fstab
 fi
 
-#Setup PODMAN
+#Change PODMAN config, path to containers storage
 sed -i 's/graphroot = "\/var\/lib\/containers\/storage"/graphroot = "\/_containers"/g' /etc/containers/storage.conf
 
-#Add GROUP and USER same as in container
+#Add POSTGRES GROUP and USER same as in container
 groupadd -r postgres --gid=99
 useradd -r -M -g postgres --uid=99 postgres
 
@@ -56,17 +56,17 @@ chmod -R 777 /_data/pg_backup
 chown -R postgres:postgres /_data/pg_data
 chmod -R 700 /_data/pg_data
 
-#Start POSTGRESQL container and restore database
+#Add FIREWALLD rule for POSTGRESQL
 firewall-cmd --permanent --zone=public --add-service=postgresql
+firewall-cmd --reload
 
+#Start POSTGRESQL container
 HOSTNAME=`hostname`
-podman run --name pgsql15 --ip 10.88.0.2 --hostname $HOSTNAME -dt -p 5432:5432 -v /_data:/_data docker.io/kostikpl/ol9:pgsql15
+podman run --name pgpro  --hostname $HOSTNAME -dt -p 5432:5432 -v /_data:/_data docker.io/kostikpl/ol9:pgsql_1c_14
 podman generate systemd --new --name pgsql15 > /etc/systemd/system/pgsql15.service
-systemctl enable --now pgsql15
-read PG_PASSWD
-podman exec -ti pgsql15 psql -c "ALTER USER postgres WITH PASSWORD $PG_PASSWD;"
+systemctl enable --now pgpro
+PG_PASSWD = 'RheujvDhfub72'
+podman exec -ti pgpro -c "ALTER USER postgres WITH PASSWORD $PG_PASSWD;"
 
 #Clean
 dnf clean all
-#Reload FIREWALLD config
-firewall-cmd --reload
