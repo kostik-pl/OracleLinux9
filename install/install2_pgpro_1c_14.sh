@@ -69,7 +69,7 @@ chmod -R 700 /_data/pg_data
 firewall-cmd --permanent --zone=public --add-service=postgresql
 firewall-cmd --reload
 
-#Start POSTGRESQL container
+#Start POSTGRESPRO container
 HOSTNAME=`hostname`
 podman run --name pgpro  --hostname $HOSTNAME -dt -p 5432:5432 -v /_data:/_data docker.io/kostikpl/ol9:pgsql_1c_14
 podman generate systemd --new --name pgsql15 > /etc/systemd/system/pgsql15.service
