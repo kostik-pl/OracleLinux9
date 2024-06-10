@@ -12,8 +12,8 @@ ENV LANG=uk_UA.UTF-8
 ENV PGDATA=/_data/pg_data
 
 # Explicitly set user/group IDs and data dir
-RUN groupadd -r postgres --gid=99 ; \
-    useradd -r -g postgres --uid=99 postgres ; \
+RUN groupadd -r postgres --gid=9999 ; \
+    useradd -r -g postgres --uid=9999 postgres ; \
     mkdir -p $PGDATA ; \
     chown -R postgres:postgres $PGDATA ; \
     chmod 700 $PGDATA
