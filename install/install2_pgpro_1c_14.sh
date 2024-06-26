@@ -37,7 +37,7 @@ then
 fi
 if ! grep -q '/_data' /etc/fstab
 then
-    echo "Addind $FILE1 to fstab"
+    echo "Addind $FILE2 to fstab"
     printf "$DISK2\n" >> /etc/fstab
 fi
 mount -a
